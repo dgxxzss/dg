@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Portfólio do Douglas</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #1e1e1e;
+      color: white;
+      font-family: 'Arial', sans-serif;
+      text-align: center;
+      padding: 20px;
+    }
+    h1 {
+      color: #00ffcc;
+      margin-bottom: 10px;
+    }
+    #sobre {
+      margin: 30px 0;
+    }
+    #gameArea {
+      width: 300px;
+      height: 500px;
+      margin: 20px auto;
+      background: #2c2c2c;
+      border: 2px solid #00ffcc;
+      position: relative;
+      overflow: hidden;
+    }
+    .carro {
+      width: 50px;
+      height: 100px;
+      background: red;
+      position: absolute;
+      bottom: 10px;
+      left: 125px;
+    }
+    .obstaculo {
+      width: 50px;
+      height: 100px;
+      background: blue;
+      position: absolute;
+      top: 0;
+    }
+    button {
+      padding: 10px 20px;
+      background-color: #00ffcc;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Portfólio do Douglas</h1>
+
+  <section id="sobre">
+    <h2>Sobre Mim</h2>
+    <p>Olá! Meu nome é <strong>Douglas</strong>, tenho <strong>16 anos</strong> e quero ser um programador profissional. Gosto de aprender linguagens de programação, criar jogos e explorar o mundo da tecnologia. Estou dando meus primeiros passos criando esse portfólio e desenvolvendo meu primeiro jogo!</p>
+  </section>
+
+  <h2>Jogo de Carro</h2>
+  <p>Use as setas do teclado para desviar dos obstáculos!</p>
+  <div id="gameArea">
+    <div class="carro" id="carro"></div>
+  </div>
+
+  <button onclick="cumprimentar()">Clique aqui</button>
+
+  <script>
+    // Script JavaScript: Mensagem de Bom Dia
+    function cumprimentar() {
+      alert("Oi, bom dia, como você está?");
+    }
+
+    // Jogo de Carro
+    const carro = document.getElementById("carro");
+    const gameArea = document.getElementById("gameArea");
+
+    let carroLeft = 125;
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowLeft" && carroLeft > 0) {
+        carroLeft -= 25;
+        carro.style.left = carroLeft + "px";
+      } else if (e.key === "ArrowRight" && carroLeft < 250) {
+        carroLeft += 25;
+        carro.style.left = carroLeft + "px";
+      }
+    });
+
+    function criarObstaculo() {
+      const obstaculo = document.createElement("div");
+      obstaculo.classList.add("obstaculo");
+      let left = [0, 75, 150, 225][Math.floor(Math.random() * 4)];
+      obstaculo.style.left = left + "px";
+      obstaculo.style.top = "0px";
+      gameArea.appendChild(obstaculo);
+
+      let obstaculoTop = 0;
+      let intervalo = setInterval(() => {
+        if (obstaculoTop >= 500) {
+          clearInterval(intervalo);
+          gameArea.removeChild(obstaculo);
+        } else {
+          obstaculoTop += 5;
+          obstaculo.style.top = obstaculoTop + "px";
+
+          // Colisão
+          if (obstaculoTop > 390 && obstaculoTop < 500 &&
+              parseInt(obstaculo.style.left) === carroLeft) {
+            alert("Game Over! Você bateu.");
+            location.reload();
+          }
+        }
+      }, 30);
+    }
+
+    setInterval(criarObstaculo, 2000);
+  </script>
+
+</body>
+</html>
